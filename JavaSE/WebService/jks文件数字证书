@@ -1,0 +1,20 @@
+1.进入到jdk安装路径的bin目录下
+    eg：C:\Java\jdk1.7.0_71\bin
+    该目录下有很多应用程序，我用的是keytool.exe,这是jdk自带的生成数字证书的工具
+
+2.keytool -genkey -alias test -keyalg RSA -keysize 1024 -keystore test.jks -validity 365
+    输入如上命令后会让你连续输入两次密钥库口令，第一次随便填，第二次要跟第一次一样。
+    接下来让你输入如下信息：你的名字与姓氏?
+                          你的组织单位名称?
+                          你的组织名称?
+                          你所在的城市?
+                          你所在的省份?
+                          你所在的国家?（CN）
+    问你是否正确？输入 是
+  
+ 3.keytool -list -v -keystore test.jks
+    输入如上命令可以显示证书的详细信息
+    
+    
+ 4.keytool -alias test -exportcert -keystore test.jks -file test.cer
+     输入如上命令可以导出证书，在bin文件下新生成了test.cer和test.jks文件，点击test.cer可以显示证书的信息，test.jks放到项目中用
