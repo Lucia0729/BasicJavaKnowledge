@@ -3,6 +3,12 @@
     该目录下有很多应用程序，我用的是keytool.exe,这是jdk自带的生成数字证书的工具
 
 2.keytool -genkey -alias test -keyalg RSA -keysize 1024 -keystore test.jks -validity 365
+（-genkey: 在用户主目录中创建一个默认文件".keystore",还会产生一个mykey的别名，mykey中包含用户的公钥、私钥和证书 ,
+-alias test：取别名为test ,
+-keyalg RSA :指定生成算法为RSA ,
+-keysize 1024: 指定密钥长度, 
+-keystore test.jks: 指定密钥库的名称为test.jks(产生的各类信息将不在.keystore文件中）
+）
     输入如上命令后会让你连续输入两次密钥库口令，第一次随便填，第二次要跟第一次一样。
     接下来让你输入如下信息：你的名字与姓氏?
                           你的组织单位名称?
