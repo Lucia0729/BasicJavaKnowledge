@@ -52,7 +52,7 @@ keytool -import -alias serverpublickey -file Server_PublicCert.cer -keystore Cli
 最后生成六个文件： Client_KeyStore.jks, Client_PublicCert.cer, Client_TrustStore.jks
 		 Server_KeyStore.jks, Server_PublicCert.cer, Server_TrustStore.jks
 
-在webservice中使用
+在webservice服务端中使用:
 	<bean id="wss4jin" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<constructor-arg>
 			<map>
