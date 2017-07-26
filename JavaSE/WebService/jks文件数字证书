@@ -7,20 +7,24 @@
 -alias test：取别名为test ,
 -keyalg RSA :指定生成算法为RSA ,
 -keysize 1024: 指定密钥长度, 
--keystore test.jks: 指定密钥库的名称为test.jks(产生的各类信息将不在.keystore文件中）
+-keystore test.jks: 指定密钥库的名称为test.jks(产生的各类信息将不在.keystore文件中），
+-validity    指定创建的证书有效期多少天
 ）
     输入如上命令后会让你连续输入两次密钥库口令，第一次随便填，第二次要跟第一次一样。
-    接下来让你输入如下信息：你的名字与姓氏?
-                          你的组织单位名称?
-                          你的组织名称?
-                          你所在的城市?
-                          你所在的省份?
+    接下来让你输入如下信息：你的名字与姓氏?    lucia
+                          你的组织单位名称?    Foxconn
+                          你的组织名称?        Foxconn
+                          你所在的城市?   WuHan
+                          你所在的省份?   HuBei
                           你所在的国家?（CN）
     问你是否正确？输入 是
   
  3.keytool -list -v -keystore test.jks
+ ( -list : 显示密钥库中的证书信息 ,
+    -v : 显示密钥库中的证书详细信息)
     输入如上命令可以显示证书的详细信息
     
     
  4.keytool -alias test -exportcert -keystore test.jks -file test.cer
+ (-exportcert 同 -export ： 将别名指定的证书导出到文件)
      输入如上命令可以导出证书，在bin文件下新生成了test.cer和test.jks文件，点击test.cer可以显示证书的信息，test.jks放到项目中用
