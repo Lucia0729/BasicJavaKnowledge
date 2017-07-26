@@ -23,12 +23,12 @@
   >,>=,<,<=,==,!=
 逻辑运算符
  &，&&，|，||，!,^
- &与&&区别: &不管&的左边是true还是false，右边都会进行运算 ,而&&只要左边是false，右边就不会进行运算
- |与||区别: |不管|的左边是true还是false，右边都会进行运算 ,而||只要左边是true，右边就不会进行运算
-  与（ && ) : 二真则真     true&&true=true , true&&false=false , false&&true=false , false&&false=false
-  或（ || ) : 一真则真     true||true=true , true||true=false , false||true=true , false||false=false
-  非（ ! ) :  取反	       !true=false , !false=true
-  异或（ ^ ) : 有且仅有一真 true^true=false , true^false=true , false^true=true , false^false=false
+	&与&&区别: &不管&的左边是true还是false，右边都会进行运算 ,而&&只要左边是false，右边就不会进行运算
+ 	|与||区别: |不管|的左边是true还是false，右边都会进行运算 ,而||只要左边是true，右边就不会进行运算
+ 	与（ && ) : 二真则真     true&&true=true , true&&false=false , false&&true=false , false&&false=false
+  	或（ || ) : 一真则真     true||true=true , true||true=false , false||true=true , false||false=false
+  	非（ ! ) :  取反	       !true=false , !false=true
+ 	异或（ ^ ) : 有且仅有一真 true^true=false , true^false=true , false^true=true , false^false=false
 条件运算符
  ?(即三目运算符)
 移位运算符
