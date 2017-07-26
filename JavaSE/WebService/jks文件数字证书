@@ -72,7 +72,7 @@ keytool -import -alias serverpublickey -file Server_PublicCert.cer -keystore Cli
 				<entry key="action" value="UsernameToken Signature Encrypt" />
 				<entry key="passwordType" value="PasswordDigest" />
 				<entry key="user" value="admin" />
-				<entry key="signatureUser" value="serverprivatekey" />
+				<entry key="signatureUser" value="serverprivatekey" />   <!--服务端证书别名-->
 				<entry key="encryptionUser" value="clientpublickey" />
 				<entry key="passwordCallbackRef">
 					<ref bean="passwordCallback" />
