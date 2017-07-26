@@ -37,11 +37,11 @@ keytool -selfcert -keystore Client_KeyStore.jks -storepass storepass -alias clie
  导出私钥，作用是将导出的证书作为公钥保存到TrustStore中。
 keytool -export -alias clientprivatekey -file Client_PublicCert.cer -keystore Client_KeyStore.jks -storepass storepass
  然后创建服务端私钥和KeyStore
-keytool -genkey -aliasserverprivatekey -keypass keypass -keystore Server_KeyStore.jks -storepass storepass -dname "CN=tongtech.com,C=CN" -keyalg RSA
+keytool -genkey -alias serverprivatekey -keypass keypass -keystore Server_KeyStore.jks -storepass storepass -dname "CN=tongtech.com,C=CN" -keyalg RSA
  用私钥进行签名
 keytool -selfcert -keystore Server_KeyStore.jks -storepass storepass -alias serverprivatekey -keypass keypass
  导出私钥
-keytool -export -aliasserverprivatekey -file Server_PublicCert.cer -keystore Server_KeyStore.jks -storepass storepass
+keytool -export -alias serverprivatekey -file Server_PublicCert.cer -keystore Server_KeyStore.jks -storepass storepass
  接下来，将客户端公钥导入到服务端的TrustStore中，将服务端公钥导入到客户端TrustStore中
 keytool -import -aliasclientpublickey -file Client_PublicCert.cer -keystore Server_TrustStore.jks -storepass storepass
  
@@ -49,8 +49,8 @@ keytool -import -aliasclientpublickey -file Client_PublicCert.cer -keystore Serv
 keytool -import -alias serverpublickey -file Server_PublicCert.cer -keystore Client_TrustStore.jks -storepass storepass
 
 可以将这些文件保存成bat文件，点击这个文件即可自动生成
-
-
+最后生成六个文件： Client_KeyStore.jks, Client_PublicCert.cer, Client_TrustStore.jks
+		 Server_KeyStore.jks, Server_PublicCert.cer, Server_TrustStore.jks
 
 在webservice中使用
 	<bean id="wss4jin" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
@@ -72,8 +72,8 @@ keytool -import -alias serverpublickey -file Server_PublicCert.cer -keystore Cli
 				<entry key="action" value="UsernameToken Signature Encrypt" />
 				<entry key="passwordType" value="PasswordDigest" />
 				<entry key="user" value="admin" />
-				<entry key="signatureUser" value="merrickserverprivate" />
-				<entry key="encryptionUser" value="merrickclientpublic" />
+				<entry key="signatureUser" value="serverprivatekey" />
+				<entry key="encryptionUser" value="clientpublickey" />
 				<entry key="passwordCallbackRef">
 					<ref bean="passwordCallback" />
 				</entry>
@@ -87,11 +87,11 @@ server_versign.properties文件内容
     org.apache.ws.security.crypto.provider=org.apache.ws.security.components.crypto.Merlin
     org.apache.ws.security.crypto.merlin.keystore.type=jks
     org.apache.ws.security.crypto.merlin.keystore.password=passwd
-    org.apache.ws.security.crypto.merlin.keystore.alias=merrickclientpublic
-    org.apache.ws.security.crypto.merlin.file=configs_server/server_trust.jks
+    org.apache.ws.security.crypto.merlin.keystore.alias=clientpublickey
+    org.apache.ws.security.crypto.merlin.file=configs_server/Server_TrustStore.jks
 server_decryption.properties文件内容
     org.apache.ws.security.crypto.provider=org.apache.ws.security.components.crypto.Merlin
     org.apache.ws.security.crypto.merlin.keystore.type=jks
     org.apache.ws.security.crypto.merlin.keystore.password=passwd
-    org.apache.ws.security.crypto.merlin.keystore.alias=merrickserverprivate
-    org.apache.ws.security.crypto.merlin.file=configs_server/server_keystore.jks
+    org.apache.ws.security.crypto.merlin.keystore.alias=serverprivatekey
+    org.apache.ws.security.crypto.merlin.file=configs_server/Server_KeyStore.jks
