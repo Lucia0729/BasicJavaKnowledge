@@ -1,0 +1,48 @@
+ JDK 1.7新特性switch 支持string 表达式的原理
+
+      在jdk1.7中switch语句可以支持String类型的参数，实际上，这个新特性是在编译器这个层次上实现的。而在 Java 虚拟机和字节代码这个层次上，
+ 还是只支持在 switch 语句中使用与整数类型兼容的类型。这么做的目的是为了减少这个特性所影响的范围，以降低实现的代价。在编译器层次实现的含义是，
+虽然开发人员在 Java 源代码的 switch 语句中使用了字符串类型，但是在编译的过程中，编译器会根据源代码的含义来进行转换，将字符串类型转换成与
+整数类型兼容的格式。不同的 Java 编译器可能采用不同的方式来完成这个转换，并采用不同的优化策略。写一个如下的Test类，源码如下：
+
+public class Test {  
+  
+    public void test(String type) {  
+        switch (type) {  
+        case "情况A":  
+            break;  
+        case "情况B":  
+            break;  
+        default:  
+            break;  
+        }  
+    }  
+}  
+编译成class文件之后，再通过反编译工具得到如下代码：
+
+public class Test {  
+    public void test(String paramString) {  
+        String str = paramString;  
+        int i = -1;  
+        switch (str.hashCode()) {  
+        case 24455345:  
+            if (!str.equals("情况A"))  
+                break;  
+            i = 0;  
+            break;  
+        case 24455346:  
+            if (!str.equals("情况B"))  
+                break;  
+            i = 1;  
+        }  
+        switch (i) {  
+        case 0:  
+            break;  
+        case 1:  
+            break;  
+        }  
+    }  
+}  
+     从上面的代码中可以看出，原来用在 switch 语句中的字符串被替换成了对应的哈希值，而 case 子句的值也被换成了原来字符串常量的哈希值。经过这样的
+转换，Java 虚拟机所看到的仍然是与整数类型兼容的类型。在这里值得注意的是，在 case 子句对应的语句块中仍然需要使用 String的 equals方法来进行字符串
+比较。这是因为哈希函数在映射的时候可能存在冲突，多个字符串的哈希值可能是一样的。进行字符串比较是为了保证转换之后的代码逻辑与之前完全一样。
