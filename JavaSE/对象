@@ -1,0 +1,10 @@
+生成对象的方法 1.new一个:A a = new A();
+              2.反射 ： A a2 = (A)Class.forName("com.a").newInstance();
+              3.克隆 : A a3 = a.clone();
+              4.反序列化 ： 
+                ByteArrayOutputStream os = new ByteArrayOutPutStream();
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+                oos.writeObject(a1);
+                byte[] buf = os.toByteArray();
+                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buf));
+                A a4 = (A)ois.readObject();
