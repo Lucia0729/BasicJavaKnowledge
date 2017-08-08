@@ -1,2 +1,57 @@
 
-反射：
+反射：反射是程序在运行时能够获得自身的信息。
+
+
+反射机制主要提供了以下功能：
+
+在运行时判断任意一个对象所属的类；
+在运行时构造任意一个类的对象；
+在运行时判断任意一个类所具有的成员变量和方法；
+在运行时调用任意一个对象的方法；
+生成动态代理
+
+反射生成类的三种方法 ： 1.Class a1 = Class.forName("a");
+                      2.Class a2 = a.class;
+                      3.Class a3 = a.getClass();
+                      
+反射获得类的属性 ： 1.获取当前类和当前父类的为public的属性：Field[] f = a1.getFields();
+                  2.获取当前类所有属性 ：Filed[] f = a1.getDeclaredFields();
+                  3.在当前类和父类中获取名称为name的属性: Field f = a1.getField("name");
+                  4.在当前类中获取名称为name的属性 : Field f = a1.getDeclaredField("name");
+                  
+反射获得类的方法 ： 1.获取当前类和当前父类的为public的方法：Method[] m = a1.getMehtods();
+                  2.获取当前类所有方法 ：Mehtod[] m = a1.getDeclaredMehtods();
+                  3.在当前类和父类中获取名称为name的方法: Mehtod m = a1.getMehtod("name");
+                  4.在当前类中获取名称为name的方法 : Mehtod m = a1.getDeclaredMehtod("name");
+
+
+//Constructor 不能从父类继承
+反射获得类的构造方法 ： 1.获取当前类为public的构造方法：Constructor[] c = a1.getConstructors();
+                  2.获取当前类所有构造方法 ：Constructor[] c = a1.getDeclaredConstructors();
+                  3.在当前类获取参数为（int ，String）的构造方法: Constructor c = a1.getConstructor(int.class,String.class);
+                  4.在当前类中获取参数为（int ，String）的构造方法 : Constructor c = a1.getDeclaredConstructor(int.class,String.class);
+ 
+获取类，方法，属性的注解：.Annotation[] an = a1.getAnnotations();.Annotation[] an = a1.getAnnotation(Class<T> annotationClass); Annotation[] an = getDeclaredAnnotations() 
+                        Annotation[] an = m.getDeclaredAnnotations(); Annotation an = m.getAnnotation(Class<T> annotationClass);
+                         Annotation[] an = f.getDeclaredAnnotations(); Annotation an = f.getAnnotation(Class<T> annotationClass);
+  
+获取类，方法，属性的修饰符（Modifier）：c.getModifiers(),m.getModifiers(),f.getModifiers()得到int型的数字
+              Modefier.toString(c.getModifiers()), Modefier.toString(m.getModifiers()), Modefier.toString(f.getModifiers())可分别
+              获得类，方法，属性的修饰符。
+              
+     1.调用静态方法：         
+              Method m = a1.getMethod("testStatic", null);
+		        	m.invoke(null, null);//静态方法object为null
+              a aa= new a();
+     2.调用private修饰的普通方法
+           Method m1 = t.getDeclaredMethod("add", int.class,int.class);
+	      	 m1.setAccessible(true);
+	        int answer = (int)m1.invoke(t1, 2,3);
+              
+              
+              
+    
+                  
+      
+                  
+                  
