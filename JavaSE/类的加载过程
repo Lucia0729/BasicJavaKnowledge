@@ -1,3 +1,9 @@
+类的加载器：
+       BootStrap ClassLoader 根加载器
+       Extension ClassLoader 扩展类加载器
+       AppClassLoader        应用程序类加载器
+       User ClassLoader      用户自定义加载器
+
 虚拟机什么时候进行类的加载（类加载的时机）
 
        1）遇到new、getstatic、putstatic或者invokestatic 这四条字节码指令的时候，且该类没有进行初始化则进行该类的初始化
