@@ -1,3 +1,5 @@
+ switch 控制表达式支持的类型有byte、short、char、int、enum（Java 5）、String(Java 7)。
+ 
  JDK 1.7新特性switch 支持string 表达式的原理
       在Java 7之前switch中使用String类型的时候只能用枚举类型。
       在jdk1.7中switch语句可以支持String类型的参数，实际上，这个新特性是在编译器这个层次上实现的。而在 Java 虚拟机和字节代码这个层次上，
