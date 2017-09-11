@@ -8,6 +8,16 @@
 对于事物关注两方面 ： 1.属性 ，2 . 行为
 
 
+对象的内存分配
+public class Car{
+  int num;
+  String color;
+}
+    Car car = new Car()
+    car引用变量，在栈中
+    Car对象实例，在堆中,对象给默认值，num=0,color=null
+
+
 生成对象的方法 1.new一个:A a = new A();
               2.反射 ： A a2 = (A)Class.forName("com.a").newInstance();
               3.克隆 : A a3 = a.clone();
