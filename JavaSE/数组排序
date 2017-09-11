@@ -3,6 +3,11 @@
 判断 :  arr		@[[L
 	arr[0]		 null	(arr[0]里面没有建数组，此时arr[0]没有具体指向的数组，里面放的地址为null)	
 	arr[0][0]        报错    (在arr[0]的基础上取[0] 则是在null基础上取数，所以会报空指针错误)	
+	
+如果加上这些     arr[0] = new int[2];
+		arr[1] = new int[4];
+		arr[2] = new int[3];
+相当于给arr[0],arr[1],arr[2]分配了指向new int[2]，new int[4]，new int[3]的地址
 
 各种排序算法
 //两数交换的函数
