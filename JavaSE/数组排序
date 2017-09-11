@@ -1,3 +1,9 @@
+二位数组   int[][] arr = new int[3][];
+	
+判断 :  arr		@[[L
+	arr[0]		 null	(arr[0]里面没有建数组，此时arr[0]没有具体指向的数组，里面放的地址为null)	
+	arr[0][0]        报错    (在arr[0]的基础上取[0] 则是在null基础上取数，所以会报空指针错误)	
+
 各种排序算法
 //两数交换的函数
 public static void swap(int[] arr, int i, int j) {
