@@ -1,0 +1,53 @@
+线程的状态 ： 新建（New），就绪(Runnable) ，运行(run) ，阻塞(block)，死亡(dead)
+创建线程的三种方式：
+1.继承Thread
+class PrimeThread extends Thread {
+         long minPrime;
+         PrimeThread(long minPrime) {
+             this.minPrime = minPrime;
+         }
+ 
+         public void run() {
+             // compute primes larger than minPrime
+         }
+     }
+     
+ 然后，下列代码会创建并启动一个线程： 
+     PrimeThread p = new PrimeThread(143);
+     p.start();
+     
+     
+2.实现Runnable
+   class PrimeRun implements Runnable {
+         long minPrime;
+         PrimeRun(long minPrime) {
+             this.minPrime = minPrime;
+         }
+ 
+         public void run() {
+             // compute primes larger than minPrime
+         }
+     }
+然后，下列代码会创建并启动一个线程： 
+
+
+     PrimeRun p = new PrimeRun(143);
+     new Thread(p).start();
+
+3.实现Callable
+class PrimeCall implements Callable<Integer>{
+        long minPrime;
+        PrimeCall(long minPrime){
+            this.minPrime = minPrime;
+        }
+        public Integer call
+          // compute primes larger than minPrime
+        }
+}
+
+然后，下列代码会创建并启动一个线程： 
+    PrimeCall p = new PrimeCall();
+    FutureTask<Integer> future = new FutureTask<Integer>(p);
+    new Thread(future).start();
+    线程的返回值：futere.get()
+ 
