@@ -1,4 +1,6 @@
-线程的状态 ： 新建（New），就绪(Runnable) ，运行(run) ，阻塞(block)，死亡(dead)
+线程的生命周期以及五种状态： 新建（New），就绪(Runnable) ，运行(run) ，阻塞(block)，死亡(dead)
+
+          
 创建线程的三种方式：
 1.继承Thread
 class PrimeThread extends Thread {
@@ -56,7 +58,32 @@ class PrimeCall implements Callable<Integer>{
     PrimeCall p = new PrimeCall();
     FutureTask<Integer> future = new FutureTask<Integer>(p);
     new Thread(future).start();
-    线程的返回值：
+线程的返回值：futere.get()
 
-futere.get()
+
+4.使用Executor
+ class PrimeRun implements Runnable {
+         long minPrime;
+          public void run() {
+             // compute primes larger than minPrime
+         }
+  }
+ CachedThreadPool 为每个任务创建一个线程： 
+         ExecutorService exec = Executors.newCachedThreadPool();
+         for(int i=0;i<5;i++){
+                    exec.execute(new PrimeRun());
+         }
+         exec.shutdown();
+         
+ FixedThreadPool 使用有限的县城集来执行所提交的任务
+   ExecutorService exec = Executors.newFixedThreadPool(5);
+         for(int i=0;i<5;i++){
+                    exec.execute(new PrimeRun());
+         }
+         exec.shutdown();
+         
+ SingleThreadExecutor 创建一个使用单个 worker 线程的 Executor，以无界队列方式来运行该线程，就是线程数量为1的 FixedThreadPool,
  
+ ScheduledThreadPool 创建一个线程池，它可安排在给定延迟后运行命令或者定期地执行。
+ 
+ SingleThreadScheduledExecutor 创建一个单线程执行程序，它可安排在给定延迟后运行命令或者定期地执行。
