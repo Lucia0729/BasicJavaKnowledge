@@ -1,0 +1,22 @@
+之前服务器上配置测试用的服务环境，我偷懒顺手用网上现成的脚本进行安装，结果MySQL启动不了，于是我只有老老实实的重新安装MySQL Server，原本以为apt-get --purge这类命令可以很好的帮我解决这个问题，于是我通过下面的命令重新安装：
+复制代码 代码如下:
+
+sudo apt-get --purge remove mysql-server
+sudo apt-get install mysql-server
+
+然后再一次的启动MySQL，仍然失败报错，搜索网络依旧是提示重新安装MySQL服务程序，看样子是上面卸载命令不能很好的清理安装残余，最后找到这么一篇文章《MySQL Problems – a complete reinstall》。找到了完全清理卸载干净MySQL的办法，记录在这里供备忘。
+
+首先你可以通过dpkg --get-selections | grep mysql命令罗列出你电脑上安装的和MySQL相关的软件，然后purge卸载，我是这么做的：
+复制代码 代码如下:
+
+sudo apt-get --purge remove mysql-server
+sudo apt-get --purge remove mysql-client
+sudo apt-get --purge remove mysql-common
+
+最后再通过下面的命令清理残余：
+复制代码 代码如下:
+
+apt-get autoremove
+apt-get autoclean
+rm /etc/mysql/ -R
+rm /var/lib/mysql/ -R
