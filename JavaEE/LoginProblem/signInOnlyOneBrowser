@@ -2,10 +2,10 @@
 （1）SESSIONID与USERNAME
 	public static final Map<String, String> SESSIONID_USER=new HashMap<String, String>();
  (2)USERID和SESSION
- public static final Map<String, HttpSession> USER_SESSION=new HashMap<String, HttpSession>();
+ 	public static final Map<String, HttpSession> USER_SESSION=new HashMap<String, HttpSession>();
 	
  2.创建一个过滤器
-public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+  	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
@@ -62,10 +62,10 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 	}
   
   3.登录
-  Public String login(){
-  	HttpSession session = ServletActionContext.getRequest().getSession();
+  		Public String login(){
+  				HttpSession session = ServletActionContext.getRequest().getSession();
 				System.out.println(session.getAttribute(user.getId()));
-        //session中已有该账号则先注销session
+       				//session中已有该账号则先注销session
 				if(Constant.USER_SESSION.get(user.getId())!=null&&!session.equals(Constant.USER_SESSION.get(user.getId()))){
 					userLoginHandle(user); 
 				}
@@ -77,23 +77,23 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 				session.setAttribute(Constant.USER, user);
 				session.setAttribute("isLogin", "false");
 				log.info("用户名成为"+user.getName()+"的登录了系统");
-        return "success";
-        }
+       				return "success";
+       	 	}
         
-private void userLoginHandle(User user) {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession();
-		session.removeAttribute(Constant.USER);
-		HttpSession httpSession = Constant.USER_SESSION.get(user.getId());
-    //设置session有效期为0，即失效。
-		httpSession.setMaxInactiveInterval(0);
-		Constant.USER_SESSION.remove(user.getId());
-		Map<String,String> map = Constant.SESSIONID_USER;
-		if(map.containsValue(user.getAccount())){
-			 for (Entry<String, String> entry : map.entrySet()) {  
-		            if(user.getAccount().equals(entry.getValue())){  
-		            	Constant.SESSIONID_USER.remove(entry.getKey());
-		            }  
-		        }  
+		private void userLoginHandle(User user) {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpSession session = request.getSession();
+			session.removeAttribute(Constant.USER);
+			HttpSession httpSession = Constant.USER_SESSION.get(user.getId());
+   			 //设置session有效期为0，即失效。
+			httpSession.setMaxInactiveInterval(0);
+			Constant.USER_SESSION.remove(user.getId());
+			Map<String,String> map = Constant.SESSIONID_USER;
+			if(map.containsValue(user.getAccount())){
+				 for (Entry<String, String> entry : map.entrySet()) {  
+		     	      		 if(user.getAccount().equals(entry.getValue())){  
+		            			Constant.SESSIONID_USER.remove(entry.getKey());
+		           		 }  
+		      		  }  
+			}
 		}
-	}
