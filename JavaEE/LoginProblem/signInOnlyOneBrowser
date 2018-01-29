@@ -1,0 +1,99 @@
+1.创建两个Map集合
+（1）SESSIONID与USERNAME
+	public static final Map<String, String> SESSIONID_USER=new HashMap<String, String>();
+ (2)USERID和SESSION
+ public static final Map<String, HttpSession> USER_SESSION=new HashMap<String, HttpSession>();
+	
+ 2.创建一个过滤器
+public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+			throws IOException, ServletException {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		String uri = httpRequest.getRequestURI();
+		HttpSession session = httpRequest.getSession();
+		User user = (User) session.getAttribute(Constant.USER);
+		if (!uri.contains("/sys/login_")) {
+			// 在浏览器A登录进去之后，同一个账号在浏览器B登录了，再在A中访问会跳转到登录页面
+			if (!Constant.SESSIONID_USER.containsKey(session.getId())) {
+				httpResponse.sendRedirect(httpRequest.getContextPath() + "/sys/login_toLoginUI.action");
+
+			} else {
+				if (user != null) {
+					PermissionCheck pc = null;
+					WebApplicationContext application = WebApplicationContextUtils
+							.getWebApplicationContext(session.getServletContext());
+					pc = (PermissionCheck) application.getBean("permissionCheck");
+					if (pc.isAccessible(user, "nsfw")) {
+						filterChain.doFilter(request, response);
+					} else {
+						httpResponse.sendRedirect(httpRequest.getContextPath() + "/sys/login_toNoPermissionUI.action");
+
+					}
+
+				} else {
+					httpResponse.sendRedirect(httpRequest.getContextPath() + "/sys/login_toLoginUI.action");
+
+				}
+			}
+		} else {
+			String account = httpRequest.getParameter("user.account");
+			String password = httpRequest.getParameter("user.password");
+			String sessionId = session.getId();
+			// 同一浏览器访问同一网站的路径免登录
+			if (Constant.SESSIONID_USER.containsKey(sessionId)) {
+				httpResponse.sendRedirect(httpRequest.getContextPath() + "/sys/home.action");
+			}
+			if (!Constant.SESSIONID_USER.containsKey(sessionId) && Constant.SESSIONID_USER.containsValue(account)) {
+				String islogin = httpRequest.getParameter("islogin");
+				if (null != islogin && islogin.equals("true")) {
+					// 发现该账号已登录，确定继续登录，正常执行操作
+					filterChain.doFilter(request, response);
+				} else {
+					// 发现该账号已登录，询问是否继续登录
+					session.setAttribute("user.account", account);
+					session.setAttribute("user.password", password);
+					session.setAttribute("isLogin", "true");
+					httpResponse.sendRedirect(httpRequest.getContextPath() + "/sys/login_toLoginUI.action");
+				}
+			} else {
+				filterChain.doFilter(request, response);
+			}
+		}
+	}
+  
+  3.登录
+  Public String login(){
+  	HttpSession session = ServletActionContext.getRequest().getSession();
+				System.out.println(session.getAttribute(user.getId()));
+        //session中已有该账号则先注销session
+				if(Constant.USER_SESSION.get(user.getId())!=null&&!session.equals(Constant.USER_SESSION.get(user.getId()))){
+					userLoginHandle(user); 
+				}
+				user.setUserRoles(userService.getUserRolesByUserId(user.getId()));
+				
+				Constant.USER_SESSION.put(user.getId(), session);
+				Constant.SESSIONID_USER.put(session.getId(), user.getAccount());
+				session.setAttribute(user.getId(),session.getId());
+				session.setAttribute(Constant.USER, user);
+				session.setAttribute("isLogin", "false");
+				log.info("用户名成为"+user.getName()+"的登录了系统");
+        return "success";
+        }
+        
+private void userLoginHandle(User user) {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		session.removeAttribute(Constant.USER);
+		HttpSession httpSession = Constant.USER_SESSION.get(user.getId());
+    //设置session有效期为0，即失效。
+		httpSession.setMaxInactiveInterval(0);
+		Constant.USER_SESSION.remove(user.getId());
+		Map<String,String> map = Constant.SESSIONID_USER;
+		if(map.containsValue(user.getAccount())){
+			 for (Entry<String, String> entry : map.entrySet()) {  
+		            if(user.getAccount().equals(entry.getValue())){  
+		            	Constant.SESSIONID_USER.remove(entry.getKey());
+		            }  
+		        }  
+		}
+	}
