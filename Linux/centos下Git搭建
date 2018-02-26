@@ -1,0 +1,50 @@
+1. 查看 yum 源仓库的 Git 信息：
+# yum info git
+（）
+
+2. 依赖库安装
+# yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+# yum install gcc perl-ExtUtils-MakeMaker
+
+
+3. 卸载低版本的 Git
+通过命令：git –-version 查看系统带的版本，Git 版本是： 1.8.3.1，所以先要卸载低版本的 Git，命令：
+
+# yum remove git
+
+4. 下载新版的 Git 源码包（我放的了  /usr/local/git 的目录下了，git是我自己mkdir的目录）
+　　进入：/usr/local下，新建git目录:  # mkdir git 
+
+　　# cd git 
+
+在线下载最新的源码包
+# wget https://github.com/git/git/archive/v2.9.2.tar.gz
+也可以离线下载，然后传到 CentOS 系统中指定的目录下。
+
+5. 解压当前目录
+# tar -xzvf v2.9.2.tar.gz
+
+6. 安装 Git
+分别执行以下命令进行编译安装，编译过程可能比较漫长，请耐心等待完成。
+
+# cd git-2.9.2
+# make prefix=/usr/local/git all
+# make prefix=/usr/local/git install
+
+7. 添加到环境变量
+vim /etc/profile  
+
+#如果没有vim，则安装vim工具   yum install vim
+
+添加这一条：   export PATH="/usr/local/git/bin:$PATH" 
+
+source /etc/profile   #是配置立即生效
+
+ 
+8. 查看版本号
+# git --version
+git version 2.9.2
+8. 将git设置为默认路径，不然后面克隆时会报错
+[root@localhost code]$ ln -s /usr/local/git/bin/git-upload-pack /usr/bin/git-upload-pack 
+
+[root@localhost code]$ ln -s /usr/local/git/bin/git-receive-pack /usr/bin/git-receive-pack 
